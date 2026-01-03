@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 set -e
+echo "📁 Creating logs directory..."
+mkdir -p /app/logs
+chmod -R 755 /app/logs
 
 echo "🚀 Running production data bootstrap..."
 

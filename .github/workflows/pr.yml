@@ -8,10 +8,7 @@ jobs:
   quality-assurance:
     runs-on: ubuntu-latest
 
-    container:
-      image: python:3.12-slim
-
-    # 🔐 VARIABLES D’ENV AU NIVEAU DU JOB (RECOMMANDÉ)
+    # 🔐 VARIABLES D'ENV GLOBALES
     env:
       # --- DATABASE ---
       DATABASE_NAME: olf_db
@@ -20,57 +17,134 @@ jobs:
       DATABASE_HOSTNAME: db
       DATABASE_PORT: 5432
 
+      # --- REDIS ---
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+
+      # --- QDRANT ---
+      QDRANT_HOST: qdrant
+      QDRANT_PORT: 6333
+
       # --- DJANGO ---
       DJANGO_SETTINGS_MODULE: backend.settings
+      DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY || 'test-secret-key-for-ci' }}
       DJANGO_DEBUG: "false"
       CI: "true"
 
-       # --- EXTERNAL SERVICES ---
-      DROPBOX_APP_KEY: ${{ secrets.DROPBOX_APP_KEY }}
-      DROPBOX_APP_SECRET: ${{ secrets.DROPBOX_APP_SECRET }}
-      DROPBOX_REFRESH_TOKEN: ${{ secrets.DROPBOX_REFRESH_TOKEN }}
-      DROPBOX_ACCESS_TOKEN_CACHE_KEY: ${{ secrets.DROPBOX_ACCESS_TOKEN_CACHE_KEY }}
-      DROPBOX_TOKEN_EXPIRY_CACHE_KEY: ${{ secrets.DROPBOX_TOKEN_EXPIRY_CACHE_KEY }}
-      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      # --- CELERY ---
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/0
+
+      # --- EXTERNAL SERVICES ---
+      DROPBOX_APP_KEY: ${{ secrets.DROPBOX_APP_KEY || '' }}
+      DROPBOX_APP_SECRET: ${{ secrets.DROPBOX_APP_SECRET || '' }}
+      DROPBOX_REFRESH_TOKEN: ${{ secrets.DROPBOX_REFRESH_TOKEN || '' }}
+      DROPBOX_ACCESS_TOKEN_CACHE_KEY: ${{ secrets.DROPBOX_ACCESS_TOKEN_CACHE_KEY || 'dropbox_access_token' }}
+      DROPBOX_TOKEN_EXPIRY_CACHE_KEY: ${{ secrets.DROPBOX_TOKEN_EXPIRY_CACHE_KEY || 'dropbox_token_expiry' }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY || 'test-key' }}
 
     services:
+      # --- DATABASE POSTGRES ---
       db:
         image: postgres:17-alpine
         env:
           POSTGRES_DB: olf_db
           POSTGRES_USER: olf_user
-          POSTGRES_PASSWORD: Boss2000
+          POSTGRES_PASSWORD: ${{ secrets.CI_DATABASE_PASSWORD }}
         options: >-
           --health-cmd="pg_isready -U olf_user -d olf_db"
           --health-interval=10s
           --health-timeout=5s
           --health-retries=5
+        ports:
+          - 5432:5432
+
+      # --- CACHE REDIS ---
+      redis:
+        image: redis:8.0-alpine
+        options: >-
+          --health-cmd="redis-cli ping"
+          --health-interval=10s
+          --health-timeout=3s
+          --health-retries=3
+        ports:
+          - 6379:6379
+
+      # --- VECTOR DATABASE QDRANT ---
+      qdrant:
+        image: qdrant/qdrant:v1.12.3
+        options: >-
+          --health-cmd="curl -f http://localhost:6333/health"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+        ports:
+          - 6333:6333
+          - 6334:6334
+        env:
+          QDRANT__STORAGE__STRICT_MODE: "false"
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install uv
+      - name: Install uv (modern Python package installer)
         run: |
           pip install --upgrade pip
           pip install uv
 
-      - name: Install dependencies
+      - name: Install Python dependencies
         run: |
           uv pip install --system -r requirements.txt
+          uv pip install --system pytest pytest-django pytest-cov
+
+      - name: Setup Python environment
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+          pip install -r requirements.txt
+
+      - name: Wait for services to be ready
+        run: |
+          echo "Waiting for services..."
+          sleep 10
 
       - name: Run migrations
         run: |
           cd backend
           python manage.py migrate --noinput
 
-      # 🔁 OPTIONNEL (fortement recommandé)
-      # - name: Run Django checks
-      #   run: |
-      #     cd backend
-      #     python manage.py check
-
-      # - name: Run tests
-      #   run: |
-      #     cd backend
-      #     pytest
+#      - name: Collect static files
+#        run: |
+#          cd backend
+#          python manage.py collectstatic --noinput
+#
+#      - name: Run Django system checks
+#        run: |
+#          cd backend
+#          python manage.py check --deploy --fail-level WARNING
+#
+#      - name: Run tests with coverage
+#        run: |
+#          cd backend
+#          pytest \
+#            --cov=contenu \
+#            --cov=shared \
+#            --cov-report=xml \
+#            --cov-report=term-missing \
+#            --disable-warnings \
+#            -v
+#
+#      - name: Security check
+#        run: |
+#          pip install bandit safety
+#          bandit -r backend/ -ll
+#          safety check -r requirements.txt
+#
+#      - name: Upload coverage to Codecov
+#        uses: codecov/codecov-action@v3
+#        with:
+#          file: ./backend/coverage.xml
+#          flags: unittests
+#        env:
+#          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
