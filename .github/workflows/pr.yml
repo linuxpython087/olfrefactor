@@ -25,11 +25,13 @@ jobs:
       DJANGO_DEBUG: "false"
       CI: "true"
 
-      # --- EXTERNAL SERVICES ---
+       # --- EXTERNAL SERVICES ---
       DROPBOX_APP_KEY: ${{ secrets.DROPBOX_APP_KEY }}
       DROPBOX_APP_SECRET: ${{ secrets.DROPBOX_APP_SECRET }}
-      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       DROPBOX_REFRESH_TOKEN: ${{ secrets.DROPBOX_REFRESH_TOKEN }}
+      DROPBOX_ACCESS_TOKEN_CACHE_KEY: ${{ secrets.DROPBOX_ACCESS_TOKEN_CACHE_KEY }}
+      DROPBOX_TOKEN_EXPIRY_CACHE_KEY: ${{ secrets.DROPBOX_TOKEN_EXPIRY_CACHE_KEY }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 
     services:
       db:
