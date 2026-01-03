@@ -97,11 +97,7 @@ jobs:
           uv pip install --system -r requirements.txt
           uv pip install --system pytest pytest-django pytest-cov
 
-      - name: Setup Python environment
-        run: |
-          python -m venv venv
-          source venv/bin/activate
-          pip install -r requirements.txt
+     
 
       - name: Wait for services to be ready
         run: |
