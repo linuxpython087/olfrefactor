@@ -41,7 +41,7 @@ jobs:
       # --- DATABASE ---
       DATABASE_NAME: olf_db
       DATABASE_USERNAME: olf_user
-      POSTGRES_PASSWORD: Boss2000
+      DATABASE_PASSWORD: Boss2000
       DATABASE_HOSTNAME: localhost
       DATABASE_PORT: 5432
 

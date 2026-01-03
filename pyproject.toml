@@ -16,7 +16,7 @@ testpaths = [
 python_files = ["test_*.py"]
 addopts = "--tb=short -p no:warnings"
 filterwarnings = "ignore::DeprecationWarning:^(?!node\\.).*:"
-django_find_project = false
+django_find_project = true
 
 
 [tool.black]
