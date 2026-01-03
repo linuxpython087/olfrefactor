@@ -39,10 +39,10 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "uploader_and_downloader",
-    "contenu",
+    "contenu.apps.ContentConfig",
     "rest_framework",
     "django_celery_beat",
-    "processing",
+    "processing.apps.ProcessingConfig",
 ]
 
 MIDDLEWARE = [
