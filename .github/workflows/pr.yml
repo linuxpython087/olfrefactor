@@ -1,3 +1,6 @@
+
+
+
 name: Quality Assurance
 
 on:
@@ -9,19 +12,38 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
+      # --- DATABASE ---
       DATABASE_NAME: olf_db
       DATABASE_USERNAME: olf_user
-      DATABASE_PASSWORD: Boss2000
+      DATABASE_PASSWORD: ${{ secrets.CI_DATABASE_PASSWORD }}
       DATABASE_HOSTNAME: db
       DATABASE_PORT: 5432
 
-      REDIS_HOST: localhost
+      # --- REDIS ---
+      REDIS_HOST: redis
       REDIS_PORT: 6379
 
+      # --- QDRANT ---
+      QDRANT_HOST: qdrant
+      QDRANT_PORT: 6333
+
+      # --- DJANGO ---
       DJANGO_SETTINGS_MODULE: backend.settings
-      DJANGO_SECRET_KEY: test-secret-key
+      DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY || 'test-secret-key-for-ci' }}
       DJANGO_DEBUG: "false"
       CI: "true"
+
+      # --- CELERY ---
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/0
+
+      # --- EXTERNAL SERVICES ---
+      DROPBOX_APP_KEY: ${{ secrets.DROPBOX_APP_KEY || '' }}
+      DROPBOX_APP_SECRET: ${{ secrets.DROPBOX_APP_SECRET || '' }}
+      DROPBOX_REFRESH_TOKEN: ${{ secrets.DROPBOX_REFRESH_TOKEN || '' }}
+      DROPBOX_ACCESS_TOKEN_CACHE_KEY: ${{ secrets.DROPBOX_ACCESS_TOKEN_CACHE_KEY || 'dropbox_access_token' }}
+      DROPBOX_TOKEN_EXPIRY_CACHE_KEY: ${{ secrets.DROPBOX_TOKEN_EXPIRY_CACHE_KEY || 'dropbox_token_expiry' }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY || 'test-key' }}
 
     services:
       db:
