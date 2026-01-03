@@ -1,6 +1,7 @@
 name: Quality Assurance
 
 on: [pull_request, workflow_call]
+
 jobs:
   quality-assurance:
     runs-on: ubuntu-latest
@@ -8,24 +9,42 @@ jobs:
     container:
       image: python:3.12-slim
 
-    env:
-      DATABASE_NAME: olf_db
-      DATABASE_USERNAME: olf_user
-      DATABASE_PASSWORD: ${{ secrets.CI_DATABASE_PASSWORD }}
-      DATABASE_HOSTNAME: db
-      DATABASE_PORT: 5432
-
-      DROPBOX_APP_KEY: ${{ secrets.DROPBOX_APP_KEY }}
-      DROPBOX_APP_SECRET: ${{ secrets.DROPBOX_APP_SECRET }}
-      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-
-      DJANGO_SETTINGS_MODULE: backend.settings
-      CI: "true"
-
     services:
       db:
         image: postgres:17-alpine
         env:
           POSTGRES_DB: olf_db
           POSTGRES_USER: olf_user
-          POSTGRES_PASSWORD: ${{ secrets.CI_DATABASE_PASSWORD }}
+          POSTGRES_PASSWORD: Boss2000
+        options: >-
+          --health-cmd="pg_isready -U olf_user -d olf_db"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        run: |
+          pip install --upgrade pip
+          pip install uv
+
+      - name: Install dependancies
+        run: uv pip install --system -r requirements.txt
+
+      - name: Run CI
+        run: |
+          cd backend && python manage.py migrate
+        env:
+          DATABASE_NAME: olf_db
+          DATABASE_USERNAME: olf_user
+          DATABASE_PASSWORD: ${{ secrets.CI_DATABASE_PASSWORD }}
+          DATABASE_HOSTNAME: db
+          DATABASE_PORT: 5432
+
+          DROPBOX_APP_KEY: ${{ secrets.DROPBOX_APP_KEY }}
+          DROPBOX_APP_SECRET: ${{ secrets.DROPBOX_APP_SECRET }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+
+          DJANGO_SETTINGS_MODULE: backend.settings
