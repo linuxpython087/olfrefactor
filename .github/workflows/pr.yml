@@ -35,7 +35,7 @@ jobs:
 
       - name: Run CI
         run: |
-          python manage.py migrate
+          cd backend && python manage.py migrate
         env:
           DATABASE_NAME: olf_db
           DATABASE_USERNAME: olf_user
