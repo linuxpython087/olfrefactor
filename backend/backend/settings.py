@@ -28,6 +28,9 @@ ALLOWED_HOSTS = []
 from decouple import config
 
 # Application definition
+import os
+
+IS_CI = "true"
 
 INSTALLED_APPS = [
     # "admin_interface",
@@ -287,98 +290,127 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "formatters": {
-        "verbose": {
-            "format": (
-                "[{asctime}] {levelname} "
-                "{name} ({module}:{lineno}) "
-                "pid={process:d} tid={thread:d} "
-                "{message}"
-            ),
-            "style": "{",
+
+
+if IS_CI:
+    LOGGING = {
+        "version": 1,
+        "disable_existing_loggers": False,
+        "formatters": {
+            "simple": {
+                "format": "[{levelname}] {name} | {message}",
+                "style": "{",
+            },
         },
-        "simple": {
-            "format": "[{levelname}] {name} | {message}",
-            "style": "{",
+        "handlers": {
+            "console": {
+                "class": "logging.StreamHandler",
+                "formatter": "simple",
+            },
         },
-    },
-    "handlers": {
-        # Console (docker / dev)
-        "console": {
+        "root": {
+            "handlers": ["console"],
             "level": "INFO",
-            "class": "logging.StreamHandler",
-            "formatter": "simple",
         },
-        # Django global
-        "django_file": {
-            "level": "INFO",
-            "class": "logging.FileHandler",
-            "filename": BASE_DIR / "logs/django.log",
-            "formatter": "verbose",
+        "loggers": {
+            "django": {
+                "handlers": ["console"],
+                "level": "INFO",
+                "propagate": False,
+            },
+            "celery": {
+                "handlers": ["console"],
+                "level": "INFO",
+                "propagate": False,
+            },
         },
-        # Celery
-        "celery_file": {
-            "level": "INFO",
-            "class": "logging.FileHandler",
-            "filename": BASE_DIR / "logs/celery.log",
-            "formatter": "verbose",
+    }
+
+else:
+    # 🔽 TA CONFIG LOGGING ACTUELLE (FILES)
+    LOGGING = {
+        "version": 1,
+        "disable_existing_loggers": False,
+        "formatters": {
+            "verbose": {
+                "format": (
+                    "[{asctime}] {levelname} "
+                    "{name} ({module}:{lineno}) "
+                    "pid={process:d} tid={thread:d} "
+                    "{message}"
+                ),
+                "style": "{",
+            },
+            "simple": {
+                "format": "[{levelname}] {name} | {message}",
+                "style": "{",
+            },
         },
-        # Contenu domain
-        "contenu_file": {
-            "level": "INFO",
-            "class": "logging.FileHandler",
-            "filename": BASE_DIR / "logs/contenu.log",
-            "formatter": "verbose",
+        "handlers": {
+            "console": {
+                "level": "INFO",
+                "class": "logging.StreamHandler",
+                "formatter": "simple",
+            },
+            "django_file": {
+                "level": "INFO",
+                "class": "logging.FileHandler",
+                "filename": BASE_DIR / "logs/django.log",
+                "formatter": "verbose",
+            },
+            "celery_file": {
+                "level": "INFO",
+                "class": "logging.FileHandler",
+                "filename": BASE_DIR / "logs/celery.log",
+                "formatter": "verbose",
+            },
+            "contenu_file": {
+                "level": "INFO",
+                "class": "logging.FileHandler",
+                "filename": BASE_DIR / "logs/contenu.log",
+                "formatter": "verbose",
+            },
+            "errors_file": {
+                "level": "ERROR",
+                "class": "logging.FileHandler",
+                "filename": BASE_DIR / "logs/errors.log",
+                "formatter": "verbose",
+            },
         },
-        # Errors only
-        "errors_file": {
-            "level": "ERROR",
-            "class": "logging.FileHandler",
-            "filename": BASE_DIR / "logs/errors.log",
-            "formatter": "verbose",
+        "loggers": {
+            "django": {
+                "handlers": ["console", "django_file"],
+                "level": "INFO",
+                "propagate": True,
+            },
+            "celery": {
+                "handlers": ["console", "celery_file"],
+                "level": "INFO",
+                "propagate": False,
+            },
+            "celery.task": {
+                "handlers": ["console", "celery_file"],
+                "level": "INFO",
+                "propagate": False,
+            },
+            "contenu": {
+                "handlers": ["console", "contenu_file"],
+                "level": "INFO",
+                "propagate": False,
+            },
+            "uploader_and_downloader": {
+                "handlers": ["console", "contenu_file"],
+                "level": "INFO",
+                "propagate": False,
+            },
+            "": {
+                "handlers": ["errors_file"],
+                "level": "ERROR",
+            },
         },
-    },
-    "loggers": {
-        # Django
-        "django": {
-            "handlers": ["console", "django_file"],
-            "level": "INFO",
-            "propagate": True,
-        },
-        # Celery core
-        "celery": {
-            "handlers": ["console", "celery_file"],
-            "level": "INFO",
-            "propagate": False,
-        },
-        # Celery tasks
-        "celery.task": {
-            "handlers": ["console", "celery_file"],
-            "level": "INFO",
-            "propagate": False,
-        },
-        # Ton domaine contenu
-        "contenu": {
-            "handlers": ["console", "contenu_file"],
-            "level": "INFO",
-            "propagate": False,
-        },
-        # Upload / Dropbox
-        "uploader_and_downloader": {
-            "handlers": ["console", "contenu_file"],
-            "level": "INFO",
-            "propagate": False,
-        },
-        # Catch-all errors
-        "": {
-            "handlers": ["errors_file"],
-            "level": "ERROR",
-        },
-    },
-}
+    }
+
+
 
 DATA_UPLOAD_MAX_MEMORY_SIZE = 104857600  # 100MB
 FILE_UPLOAD_MAX_MEMORY_SIZE = 104857600  # 100MB
