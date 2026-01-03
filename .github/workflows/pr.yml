@@ -41,7 +41,7 @@ jobs:
       # --- DATABASE ---
       DATABASE_NAME: olf_db
       DATABASE_USERNAME: olf_user
-      DATABASE_PASSWORD: ${{ secrets.CI_DATABASE_PASSWORD }}
+      DATABASE_PASSWORD: Boss2000
       DATABASE_HOSTNAME: localhost
       DATABASE_PORT: 5432
 
