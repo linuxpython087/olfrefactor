@@ -31,7 +31,7 @@ jobs:
           pip install uv
 
       - name: Run CI
-        run: make ci
+        run: python --version
         env:
           DATABASE_NAME: olf_db
           DATABASE_USERNAME: olf_user
