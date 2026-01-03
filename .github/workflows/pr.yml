@@ -39,10 +39,14 @@ jobs:
 
     env:
       # --- DATABASE ---
-      BACKEND_SETTING_DATABASES: '{"default":{"HOST":"db"}}'
+      DATABASE_NAME: olf_db
+      DATABASE_USERNAME: olf_user
+      DATABASE_PASSWORD: ${{ secrets.CI_DATABASE_PASSWORD }}
+      DATABASE_HOSTNAME: localhost
+      DATABASE_PORT: 5432
 
       # --- REDIS ---
-      REDIS_HOST: redis
+      REDIS_HOST: localhost
       REDIS_PORT: 6379
 
       # --- QDRANT ---
