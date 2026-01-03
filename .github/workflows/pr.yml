@@ -11,6 +11,32 @@ jobs:
   quality-assurance:
     runs-on: ubuntu-latest
 
+    services:
+      db:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_DB: olf_db
+          POSTGRES_USER: olf_user
+          POSTGRES_PASSWORD: Boss2000
+        options: >-
+          --health-cmd="pg_isready -U olf_user -d olf_db"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+        ports:
+          - 5432:5432
+
+      redis:
+        image: redis:8.0-alpine
+        options: >-
+          --health-cmd="redis-cli ping"
+          --health-interval=10s
+          --health-timeout=3s
+          --health-retries=3
+        ports:
+          - 6379:6379
+
+
     env:
       # --- DATABASE ---
       DATABASE_NAME: olf_db
@@ -45,30 +71,6 @@ jobs:
       DROPBOX_TOKEN_EXPIRY_CACHE_KEY: ${{ secrets.DROPBOX_TOKEN_EXPIRY_CACHE_KEY || 'dropbox_token_expiry' }}
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY || 'test-key' }}
 
-    services:
-      db:
-        image: postgres:17-alpine
-        env:
-          POSTGRES_DB: olf_db
-          POSTGRES_USER: olf_user
-          POSTGRES_PASSWORD: Boss2000
-        options: >-
-          --health-cmd="pg_isready -U olf_user -d olf_db"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
-        ports:
-          - 5432:5432
-
-      redis:
-        image: redis:8.0-alpine
-        options: >-
-          --health-cmd="redis-cli ping"
-          --health-interval=10s
-          --health-timeout=3s
-          --health-retries=3
-        ports:
-          - 6379:6379
 
     steps:
       - name: Checkout code
