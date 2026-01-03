@@ -1,0 +1,1068 @@
+{
+    "metadata": {
+        "version": "1.0",
+        "date": "2025-12-20",
+        "description": "Source de Vérité Unique pour tous les indicateurs OIF",
+        "sources": [
+            "Annexe 1 bis – Cahier des charges",
+            "Matrice Indicateurs client",
+            "Questionnaires pays",
+            "Fichiers World Development Indicators",
+            "Autres fichiers métiers"
+        ]
+    },
+    "indicators": [
+        {
+            "indicator_id": "DEN_001",
+            "indicator_code": "nombre_francophones",
+            "label": "Nombre de francophones",
+            "category": "denombrement",
+            "value_type": "absolute",
+            "unit": "milliers",
+            "description": null,
+            "aliases": [
+                "Nombre Francophones en milliers",
+                "Population francophone"
+            ],
+            "keywords": ["francophones", "population"],
+            "validation_rules": {
+                "min": 0
+            },
+            "source": ["annexe_1_bis", "matrice"]
+        },
+
+        {
+            "indicator_id": "DEN_002",
+            "indicator_code": "densite_francophone_population",
+            "label": "Densité francophone de la population",
+            "category": "denombrement",
+            "value_type": "percentage",
+            "unit": "%",
+            "description": null,
+            "aliases": [
+                "Pourcentage de Francophones",
+                "Taux de francophonie"
+            ],
+            "keywords": ["francophones", "densité", "pourcentage"],
+            "validation_rules": {
+                "min": 0,
+                "max": 100
+            },
+            "source": ["annexe_1_bis", "matrice"]
+        },
+
+        {
+            "indicator_id": "DEN_003",
+            "indicator_code": "nombre_locuteurs_autres_langues_officielles",
+            "label": "Nombre de locuteurs pour les autres langues officielles ou nationales",
+            "category": "denombrement",
+            "value_type": "absolute",
+            "unit": null,
+            "description": null,
+            "aliases": [],
+            "keywords": ["locuteurs", "langues", "officielles"],
+            "validation_rules": {
+                "min": 0
+            },
+            "source": ["annexe_1_bis"]
+        },
+
+        {
+            "indicator_id": "DEN_004",
+            "indicator_code": "evolution_population_francophone",
+            "label": "Evolutions démographiques des populations francophones",
+            "category": "denombrement",
+            "value_type": null,
+            "unit": null,
+            "description": null,
+            "aliases": [
+                "Evolution de la population francophone"
+            ],
+            "keywords": ["évolution", "démographie", "francophones"],
+            "validation_rules": null,
+            "source": ["annexe_1_bis"]
+        },
+
+        {
+            "indicator_id": "DEN_005",
+            "indicator_code": "prospective_population_francophone_monde",
+            "label": "Prospective de la population francophone dans le monde",
+            "category": "denombrement",
+            "value_type": null,
+            "unit": null,
+            "description": null,
+            "aliases": [
+                "Projection population francophone"
+            ],
+            "keywords": ["prospective", "projection", "francophones"],
+            "validation_rules": null,
+            "source": ["annexe_1_bis"]
+        },
+
+        {
+            "indicator_id": "DEN_006",
+            "indicator_code": "usage_francais",
+            "label": "Usage du français",
+            "category": "denombrement",
+            "value_type": null,
+            "unit": null,
+            "description": null,
+            "aliases": [],
+            "keywords": ["usage", "langue", "français"],
+            "validation_rules": null,
+            "source": ["annexe_1_bis"]
+        },
+
+        {
+            "indicator_id": "ENS_GEN_001",
+            "indicator_code": "nombre_enseignants_prescolaire",
+            "label": "Nombre d’enseignants en préscolaire",
+            "category": "enseignement",
+            "value_type": "absolute",
+            "unit": null,
+            "description": "Teachers in pre-primary education, both sexes (number)",
+            "aliases": [],
+            "keywords": ["enseignants", "préscolaire"],
+            "validation_rules": {"min": 0},
+            "source": ["nombre_enseignants"]
+        },
+
+        {
+            "indicator_id": "ENS_GEN_002",
+            "indicator_code": "nombre_enseignants_primaire",
+            "label": "Nombre d’enseignants en primaire",
+            "category": "enseignement",
+            "value_type": "absolute",
+            "unit": null,
+            "description": "Teachers in primary education, both sexes (number)",
+            "aliases": [],
+            "keywords": ["enseignants", "primaire"],
+            "validation_rules": {"min": 0},
+            "source": ["nombre_enseignants"]
+        },
+
+        {
+            "indicator_id": "ENS_GEN_003",
+            "indicator_code": "nombre_enseignants_secondaire_1",
+            "label": "Nombre d’enseignants en secondaire 1er cycle",
+            "category": "enseignement",
+            "value_type": "absolute",
+            "unit": null,
+            "description": "Teachers in lower secondary education",
+            "aliases": [],
+            "keywords": ["enseignants", "secondaire"],
+            "validation_rules": {"min": 0},
+            "source": ["nombre_enseignants"]
+        },
+
+        {
+            "indicator_id": "ENS_GEN_004",
+            "indicator_code": "nombre_enseignants_secondaire_2",
+            "label": "Nombre d’enseignants en secondaire 2ème cycle",
+            "category": "enseignement",
+            "value_type": "absolute",
+            "unit": null,
+            "description": "Teachers in upper secondary education",
+            "aliases": [],
+            "keywords": ["enseignants", "secondaire"],
+            "validation_rules": {"min": 0},
+            "source": ["nombre_enseignants"]
+        },
+
+        {
+            "indicator_id": "ENS_GEN_005",
+            "indicator_code": "nombre_enseignants_superieur",
+            "label": "Nombre d’enseignants en études supérieures",
+            "category": "enseignement",
+            "value_type": "absolute",
+            "unit": null,
+            "description": "Teachers in tertiary education programmes",
+            "aliases": [],
+            "keywords": ["enseignants", "supérieur"],
+            "validation_rules": {"min": 0},
+            "source": ["nombre_enseignants"]
+        },
+
+        {
+            "indicator_id": "ENS_GEN_006",
+            "indicator_code": "nombre_eleves_primaire",
+            "label": "Nombre élèves/étudiants en primaire",
+            "category": "enseignement",
+            "value_type": "absolute",
+            "unit": null,
+            "description": "Enrolment in primary education",
+            "aliases": [],
+            "keywords": ["élèves", "primaire"],
+            "validation_rules": {"min": 0},
+            "source": ["nombre_eleves"]
+        },
+
+        {
+            "indicator_id": "ENS_GEN_007",
+            "indicator_code": "ratio_encadrement_primaire",
+            "label": "Ratio d’encadrement en primaire",
+            "category": "enseignement",
+            "value_type": "ratio",
+            "unit": null,
+            "description": "Nombre élèves / nombre enseignants",
+            "aliases": [],
+            "keywords": ["ratio", "encadrement"],
+            "validation_rules": {"min": 0},
+            "source": ["calcul_metier"]
+        },
+
+        {
+            "indicator_id": "ENS_GEN_008",
+            "indicator_code": "taux_inscription_prive_primaire",
+            "label": "% d’inscription en privé en primaire",
+            "category": "enseignement",
+            "value_type": "percentage",
+            "unit": "%",
+            "description": "Pourcentage d’inscription en privé",
+            "aliases": [],
+            "keywords": ["privé", "inscription"],
+            "validation_rules": {"min": 0, "max": 100},
+            "source": ["inscription_prive"]
+        },
+
+        {
+            "indicator_id": "ENS_GEN_009",
+            "indicator_code": "taux_brut_scolarisation_primaire",
+            "label": "Taux brut de scolarisation en primaire",
+            "category": "enseignement",
+            "value_type": "percentage",
+            "unit": "%",
+            "description": "Gross enrolment ratio, primary",
+            "aliases": [],
+            "keywords": ["scolarisation", "primaire"],
+            "validation_rules": {"min": 0, "max": 150},
+            "source": ["taux_brut_net"]
+        },
+
+        {
+            "indicator_id": "ENS_GEN_010",
+            "indicator_code": "taux_net_scolarisation_primaire",
+            "label": "Taux net de scolarisation en primaire",
+            "category": "enseignement",
+            "value_type": "percentage",
+            "unit": "%",
+            "description": "Net enrolment rate, primary",
+            "aliases": [],
+            "keywords": ["scolarisation", "primaire"],
+            "validation_rules": {"min": 0, "max": 100},
+            "source": ["taux_brut_net"]
+        },
+
+        {
+            "indicator_id": "ENS_GEN_011",
+            "indicator_code": "taux_achevement_primaire",
+            "label": "Taux d’achèvement en primaire",
+            "category": "enseignement",
+            "value_type": "percentage",
+            "unit": "%",
+            "description": "Completion rate, primary",
+            "aliases": [],
+            "keywords": ["achèvement", "primaire"],
+            "validation_rules": {"min": 0, "max": 100},
+            "source": ["taux_achevement"]
+        },
+
+        {
+            "indicator_id": "ENS_GEN_012",
+            "indicator_code": "taux_enfants_non_scolarises_primaire",
+            "label": "% d’enfants non scolarisés en primaire",
+            "category": "enseignement",
+            "value_type": "percentage",
+            "unit": "%",
+            "description": "Out-of-school rate, primary",
+            "aliases": [],
+            "keywords": ["non scolarisés"],
+            "validation_rules": {"min": 0, "max": 100},
+            "source": ["taux_achevement"]
+        },
+
+        {
+            "indicator_id": "eco_001",
+            "indicator_code": "pib_par_habitant",
+            "label": "PIB / habitant",
+            "category": "economic",
+            "value_type": "absolute",
+            "unit": "USD",
+            "description": "GDP per capita (current US$)",
+            "aliases": ["GDP per capita"],
+            "keywords": ["PIB", "revenu", "habitant", "GDP"],
+            "validation_rules": {
+                "min": 0
+            },
+            "source": "P_Data_Extract_From_World_Development_Indicators"
+        },
+
+        {
+            "indicator_id": "eco_002",
+            "indicator_code": "pib_nominal",
+            "label": "PIB nominal",
+            "category": "economic",
+            "value_type": "absolute",
+            "unit": "USD",
+            "description": "GDP (current US$)",
+            "aliases": ["GDP nominal"],
+            "keywords": ["PIB", "GDP", "économie"],
+            "validation_rules": {
+                "min": 0
+            },
+            "source": "P_Data_Extract_From_World_Development_Indicators"
+        },
+
+        {
+            "indicator_id": "eco_003",
+            "indicator_code": "pib_ppa",
+            "label": "PIB PPA",
+            "category": "economic",
+            "value_type": "absolute",
+            "unit": "international_dollar",
+            "description": "GDP, PPP (current international $)",
+            "aliases": ["GDP PPP"],
+            "keywords": ["PIB", "PPA", "GDP"],
+            "validation_rules": {
+                "min": 0
+            },
+            "source": "P_Data_Extract_From_World_Development_Indicators"
+        },
+
+        {
+            "indicator_id": "eco_004",
+            "indicator_code": "croissance_pib",
+            "label": "Croissance du PIB",
+            "category": "economic",
+            "value_type": "percentage",
+            "unit": "%",
+            "description": "GDP growth (annual %)",
+            "aliases": ["GDP growth"],
+            "keywords": ["PIB", "croissance", "GDP"],
+            "validation_rules": {
+                "min": -100,
+                "max": 100
+            },
+            "source": "P_Data_Extract_From_World_Development_Indicators"
+        },
+
+        {
+            "indicator_id": "eco_005",
+            "indicator_code": "taux_chomage_total",
+            "label": "Taux de chômage",
+            "category": "economic",
+            "value_type": "percentage",
+            "unit": "%",
+            "description": "Unemployment, total (% of total labor force)",
+            "aliases": ["Unemployment rate"],
+            "keywords": ["chômage", "emploi"],
+            "validation_rules": {
+                "min": 0,
+                "max": 100
+            },
+            "source": "P_Data_Extract_From_World_Development_Indicators"
+        },
+
+        {
+            "indicator_id": "eco_006",
+            "indicator_code": "taux_chomage_hommes",
+            "label": "Taux de chômage hommes",
+            "category": "economic",
+            "value_type": "percentage",
+            "unit": "%",
+            "description": "Unemployment, male (% of male labor force)",
+            "aliases": ["Male unemployment"],
+            "keywords": ["chômage", "hommes"],
+            "validation_rules": {
+                "min": 0,
+                "max": 100
+            },
+            "source": "P_Data_Extract_From_World_Development_Indicators"
+        },
+
+        {
+            "indicator_id": "eco_007",
+            "indicator_code": "taux_chomage_femmes",
+            "label": "Taux de chômage femmes",
+            "category": "economic",
+            "value_type": "percentage",
+            "unit": "%",
+            "description": "Unemployment, female (% of female labor force)",
+            "aliases": ["Female unemployment"],
+            "keywords": ["chômage", "femmes"],
+            "validation_rules": {
+                "min": 0,
+                "max": 100
+            },
+            "source": "P_Data_Extract_From_World_Development_Indicators"
+        },
+
+        {
+            "indicator_id": "eco_008",
+            "indicator_code": "taux_inflation",
+            "label": "Taux d'inflation",
+            "category": "economic",
+            "value_type": "percentage",
+            "unit": "%",
+            "description": "Inflation, consumer prices (annual %)",
+            "aliases": ["Inflation CPI"],
+            "keywords": ["inflation", "prix"],
+            "validation_rules": {
+                "min": -50,
+                "max": 1000
+            },
+            "source": "P_Data_Extract_From_World_Development_Indicators"
+        },
+
+        {
+            "indicator_id": "eco_009",
+            "indicator_code": "taux_connectivite",
+            "label": "Taux de connectivité",
+            "category": "economic",
+            "value_type": "percentage",
+            "unit": "%",
+            "description": "Pourcentage de personnes avec accès à internet",
+            "aliases": ["Internet penetration"],
+            "keywords": ["internet", "connectivité"],
+            "validation_rules": {
+                "min": 0,
+                "max": 100
+            },
+            "source": "Pourcentage de personnes avec accès à internet"
+        },
+
+        {
+            "indicator_id": "eco_010",
+            "indicator_code": "estimation_francophones_connectes",
+            "label": "Estimation des francophones connectés",
+            "category": "economic",
+            "value_type": "absolute",
+            "unit": null,
+            "description": "Calculé : Nombre de francophones × taux de connectivité",
+            "aliases": [],
+            "keywords": ["francophones", "internet"],
+            "validation_rules": {
+                "min": 0
+            },
+            "source": "calcul_metier"
+        },
+
+        {
+            "indicator_id": "eco_011",
+            "indicator_code": "repartition_sites_par_langue",
+            "label": "% de sites francophones et sites dans d'autres langues",
+            "category": "economic",
+            "value_type": "percentage",
+            "unit": "%",
+            "description": "Répartition %FR Web, %AN Web, %LOC",
+            "aliases": ["Web language distribution"],
+            "keywords": ["web", "langue", "sites"],
+            "validation_rules": {
+                "min": 0,
+                "max": 100
+            },
+            "source": "Pourcentage sites francophones"
+        },
+
+        {
+            "indicator_id": "THE_001",
+            "indicator_code": "statut_institutionnel_langue_francaise",
+            "label": "Statut institutionnel de la langue française dans le pays",
+            "category": "themes_specifiques",
+            "value_type": "categorical",
+            "unit": null,
+            "description": null,
+            "aliases": [],
+            "keywords": ["statut", "institutionnel", "langue française"],
+            "validation_rules": null,
+            "source": ["annexe_1_bis"]
+        },
+
+        {
+            "indicator_id": "THE_002",
+            "indicator_code": "statut_institutionnel_autres_langues",
+            "label": "Statut institutionnel d’autres langues en présence dans le pays",
+            "category": "themes_specifiques",
+            "value_type": "categorical",
+            "unit": null,
+            "description": null,
+            "aliases": [],
+            "keywords": ["statut", "institutionnel", "langues"],
+            "validation_rules": null,
+            "source": ["annexe_1_bis"]
+        },
+
+        {
+            "indicator_id": "THE_003",
+            "indicator_code": "nombre_films_produits_francais",
+            "label": "Nombre de films produits localement dont ceux en français",
+            "category": "themes_specifiques",
+            "value_type": "absolute",
+            "unit": null,
+            "description": null,
+            "aliases": [],
+            "keywords": ["films", "cinéma", "français"],
+            "validation_rules": {
+                "min": 0
+            },
+            "source": ["annexe_1_bis"]
+        },
+
+        {
+            "indicator_id": "THE_004",
+            "indicator_code": "nombre_chaines_tv_francaises",
+            "label": "Nombre de chaînes TV émettant en langue française",
+            "category": "themes_specifiques",
+            "value_type": "absolute",
+            "unit": null,
+            "description": null,
+            "aliases": [],
+            "keywords": ["chaînes TV", "télévision", "français"],
+            "validation_rules": {
+                "min": 0
+            },
+            "source": ["annexe_1_bis"]
+        },
+
+        {
+            "indicator_id": "THE_005",
+            "indicator_code": "nombre_stations_radio_francaises",
+            "label": "Nombre de stations de radio émettant en langue française",
+            "category": "themes_specifiques",
+            "value_type": "absolute",
+            "unit": null,
+            "description": null,
+            "aliases": [],
+            "keywords": ["radio", "français"],
+            "validation_rules": {
+                "min": 0
+            },
+            "source": ["annexe_1_bis"]
+        },
+
+        {
+            "indicator_id": "THE_006",
+            "indicator_code": "stations_radio_etrangeres_francais",
+            "label": "Principales stations de radio étrangères au pays émettant en français",
+            "category": "themes_specifiques",
+            "value_type": "list",
+            "unit": null,
+            "description": null,
+            "aliases": [],
+            "keywords": ["radio", "étrangères", "français"],
+            "validation_rules": null,
+            "source": ["annexe_1_bis"]
+        },
+
+        {
+            "indicator_id": "THE_007",
+            "indicator_code": "nombre_titres_presse_francaise",
+            "label": "Nombre de titres de presse publiés en langue française",
+            "category": "themes_specifiques",
+            "value_type": "absolute",
+            "unit": null,
+            "description": null,
+            "aliases": [],
+            "keywords": ["presse", "journaux", "français"],
+            "validation_rules": {
+                "min": 0
+            },
+            "source": ["annexe_1_bis"]
+        },
+
+        {
+            "indicator_id": "THE_008",
+            "indicator_code": "sites_information_francais",
+            "label": "Sites d’information de langue française uniquement sur internet",
+            "category": "themes_specifiques",
+            "value_type": "absolute",
+            "unit": null,
+            "description": null,
+            "aliases": [],
+            "keywords": ["sites", "information", "internet", "français"],
+            "validation_rules": {
+                "min": 0
+            },
+            "source": ["annexe_1_bis"]
+        },
+
+        {
+            "indicator_id": "THE_009",
+            "indicator_code": "nombre_internautes_francophones",
+            "label": "Nombre d’internautes francophones",
+            "category": "themes_specifiques",
+            "value_type": "absolute",
+            "unit": null,
+            "description": null,
+            "aliases": [],
+            "keywords": ["internautes", "francophones"],
+            "validation_rules": {
+                "min": 0
+            },
+            "source": ["annexe_1_bis"]
+        },
+
+        {
+            "indicator_id": "THE_010",
+            "indicator_code": "nombre_livres_traduits_francais",
+            "label": "Nombre de livres traduits en français",
+            "category": "themes_specifiques",
+            "value_type": "absolute",
+            "unit": null,
+            "description": null,
+            "aliases": [],
+            "keywords": ["livres", "traduction", "français"],
+            "validation_rules": {
+                "min": 0
+            },
+            "source": ["annexe_1_bis"]
+        },
+
+        {
+            "indicator_id": "THE_011",
+            "indicator_code": "nombre_maisons_edition_francaises",
+            "label": "Nombre de maisons d’édition en langue française",
+            "category": "themes_specifiques",
+            "value_type": "absolute",
+            "unit": null,
+            "description": null,
+            "aliases": [],
+            "keywords": ["édition", "maisons d’édition", "français"],
+            "validation_rules": {
+                "min": 0
+            },
+            "source": ["annexe_1_bis"]
+        },
+
+        {
+            "indicator_id": "THE_012",
+            "indicator_code": "nombre_inscrits_clac",
+            "label": "Nombre d’inscrits dans les CLAC",
+            "category": "themes_specifiques",
+            "value_type": "absolute",
+            "unit": null,
+            "description": null,
+            "aliases": [],
+            "keywords": ["CLAC", "inscrits"],
+            "validation_rules": {
+                "min": 0
+            },
+            "source": ["annexe_1_bis"]
+        },
+
+        {
+            "indicator_id": "THE_013",
+            "indicator_code": "nombre_brevets_francais",
+            "label": "Nombre de brevets déposés en français",
+            "category": "themes_specifiques",
+            "value_type": "absolute",
+            "unit": null,
+            "description": null,
+            "aliases": [],
+            "keywords": ["brevets", "innovation", "français"],
+            "validation_rules": {
+                "min": 0
+            },
+            "source": ["annexe_1_bis"]
+        },
+
+        {
+            "indicator_id": "THE_014",
+            "indicator_code": "nombre_publications_scientifiques_francais",
+            "label": "Nombre de publications scientifiques en français",
+            "category": "themes_specifiques",
+            "value_type": "absolute",
+            "unit": null,
+            "description": null,
+            "aliases": [],
+            "keywords": ["publications", "scientifique", "français"],
+            "validation_rules": {
+                "min": 0
+            },
+            "source": ["annexe_1_bis"]
+        },
+
+        {
+            "indicator_id": "THE_015",
+            "indicator_code": "existence_organisme_promotion_francais",
+            "label": "Existence d’un organisme public en charge de l’aménagement ou la promotion de la langue française",
+            "category": "themes_specifiques",
+            "value_type": "boolean",
+            "unit": null,
+            "description": null,
+            "aliases": [],
+            "keywords": ["organisme", "promotion", "langue française"],
+            "validation_rules": null,
+            "source": ["annexe_1_bis"]
+        },
+
+        {
+            "indicator_id": "THE_016",
+            "indicator_code": "existence_organisme_audience_medias",
+            "label": "Existence d’un organisme de statistiques nationales d’audiences des médias (radio, TV)",
+            "category": "themes_specifiques",
+            "value_type": "boolean",
+            "unit": null,
+            "description": null,
+            "aliases": [],
+            "keywords": ["audiences", "médias", "statistiques"],
+            "validation_rules": null,
+            "source": ["annexe_1_bis"]
+        },
+
+        {
+            "indicator_id": "THE_017",
+            "indicator_code": "existence_quotas_linguistiques_audiovisuel",
+            "label": "Existence de quotas ou règles linguistiques en matière de diffusion de programmes audiovisuel",
+            "category": "themes_specifiques",
+            "value_type": "boolean",
+            "unit": null,
+            "description": null,
+            "aliases": [],
+            "keywords": ["quotas", "audiovisuel", "langue"],
+            "validation_rules": null,
+            "source": ["annexe_1_bis"]
+        },
+
+        {
+            "indicator_id": "CMD_001",
+            "indicator_code": "nombre_livres_publies_francais",
+            "label": "Nombre de livres publiés en français",
+            "category": "culture_medias_decouvrabilite",
+            "value_type": "absolute",
+            "unit": null,
+            "description": "Indicateur issu du questionnaire pays (Q123)",
+            "aliases": [
+                "Livres publiés en français"
+            ],
+            "keywords": ["livres", "édition", "français"],
+            "validation_rules": {"min": 0},
+            "source": ["questionnaire_pays_Q123"]
+        },
+
+        {
+            "indicator_id": "CMD_002",
+            "indicator_code": "nombre_livres_traduits_francais",
+            "label": "Nombre de livres traduits en français",
+            "category": "culture_medias_decouvrabilite",
+            "value_type": "absolute",
+            "unit": null,
+            "description": "Indicateur issu du questionnaire pays (Q124)",
+            "aliases": [
+                "Livres traduits en français"
+            ],
+            "keywords": ["livres", "traduction", "français"],
+            "validation_rules": {"min": 0},
+            "source": ["questionnaire_pays_Q124"]
+        },
+
+        {
+            "indicator_id": "CMD_003",
+            "indicator_code": "nombre_chaines_tv_francais",
+            "label": "Nombre de chaînes TV émettant en français",
+            "category": "culture_medias_decouvrabilite",
+            "value_type": "absolute",
+            "unit": null,
+            "description": "Questionnaire pays (Q127)",
+            "aliases": [
+                "Chaînes TV francophones"
+            ],
+            "keywords": ["tv", "médias", "français"],
+            "validation_rules": {"min": 0},
+            "source": ["questionnaire_pays_Q127"]
+        },
+
+        {
+            "indicator_id": "CMD_004",
+            "indicator_code": "nombre_stations_radio_francais",
+            "label": "Nombre de stations radio émettant en français",
+            "category": "culture_medias_decouvrabilite",
+            "value_type": "absolute",
+            "unit": null,
+            "description": "Questionnaire pays (Q128)",
+            "aliases": [
+                "Radios francophones"
+            ],
+            "keywords": ["radio", "médias", "français"],
+            "validation_rules": {"min": 0},
+            "source": ["questionnaire_pays_Q128"]
+        },
+
+        {
+            "indicator_id": "CMD_005",
+            "indicator_code": "nombre_films_produits_localement",
+            "label": "Nombre total de films produits localement",
+            "category": "culture_medias_decouvrabilite",
+            "value_type": "absolute",
+            "unit": null,
+            "description": "Questionnaire pays (Q138)",
+            "aliases": [
+                "Production cinématographique locale"
+            ],
+            "keywords": ["films", "cinéma", "production"],
+            "validation_rules": {"min": 0},
+            "source": ["questionnaire_pays_Q138"]
+        },
+
+        {
+            "indicator_id": "CMD_006",
+            "indicator_code": "nombre_films_produits_francais",
+            "label": "Nombre de films produits en français",
+            "category": "culture_medias_decouvrabilite",
+            "value_type": "absolute",
+            "unit": null,
+            "description": "Questionnaire pays (Q139)",
+            "aliases": [
+                "Films francophones"
+            ],
+            "keywords": ["films", "cinéma", "français"],
+            "validation_rules": {"min": 0},
+            "source": ["questionnaire_pays_Q139"]
+        },
+
+        {
+            "indicator_id": "CMD_007",
+            "indicator_code": "mesures_valorisation_langue_francaise",
+            "label": "Mesures pour valoriser l'image de la langue française",
+            "category": "culture_medias_decouvrabilite",
+            "value_type": "text",
+            "unit": null,
+            "description": "Description qualitative des politiques et actions (Q167)",
+            "aliases": [],
+            "keywords": ["politique linguistique", "valorisation", "français"],
+            "validation_rules": null,
+            "source": ["questionnaire_pays_Q167"]
+        },
+
+        {
+            "indicator_id": "CMD_008",
+            "indicator_code": "mesures_decouvrabilite_contenus_francais",
+            "label": "Mesures pour promouvoir la découvrabilité des contenus en français",
+            "category": "culture_medias_decouvrabilite",
+            "value_type": "text",
+            "unit": null,
+            "description": "Mesures liées à la découvrabilité numérique (Q176, Q179)",
+            "aliases": [
+                "Découvrabilité des contenus francophones"
+            ],
+            "keywords": ["découvrabilité", "contenus", "numérique", "français"],
+            "validation_rules": null,
+            "source": ["questionnaire_pays_Q176", "questionnaire_pays_Q179"]
+        },
+
+        {
+            "indicator_id": "VAD_001",
+            "indicator_code": "langue_officielle_oif",
+            "label": "Langue officielle enregistrée dans les OI par les délégations issues de pays membres, associés ou observateurs de l’OIF",
+            "category": "vade_mecum",
+            "value_type": "categorical",
+            "unit": null,
+            "description": null,
+            "aliases": [],
+            "keywords": ["langue", "officielle", "OIF", "organisations internationales"],
+            "validation_rules": null,
+            "source": ["annexe_1_bis"]
+        },
+
+        {
+            "indicator_id": "VAD_002",
+            "indicator_code": "langues_interpretation_orale_oi",
+            "label": "Langues d’interprétation à l’oral dans les OI",
+            "category": "vade_mecum",
+            "value_type": "list",
+            "unit": null,
+            "description": null,
+            "aliases": [],
+            "keywords": ["interprétation", "langues", "oral", "OI"],
+            "validation_rules": null,
+            "source": ["annexe_1_bis"]
+        },
+
+        {
+            "indicator_id": "VAD_003",
+            "indicator_code": "nombre_delegations_oif",
+            "label": "Nombre de délégations membres des OI issues de pays membres, associés ou observateurs de l’OIF",
+            "category": "vade_mecum",
+            "value_type": "absolute",
+            "unit": null,
+            "description": null,
+            "aliases": [],
+            "keywords": ["délégations", "OIF", "OI"],
+            "validation_rules": {
+                "min": 0
+            },
+            "source": ["annexe_1_bis"]
+        },
+
+        {
+            "indicator_id": "VAD_004",
+            "indicator_code": "volume_documents_francais_langue_source",
+            "label": "Volume de documents où le français est langue source dans les OI",
+            "category": "vade_mecum",
+            "value_type": "absolute",
+            "unit": null,
+            "description": null,
+            "aliases": [],
+            "keywords": ["documents", "français", "langue source"],
+            "validation_rules": {
+                "min": 0
+            },
+            "source": ["annexe_1_bis"]
+        },
+
+        {
+            "indicator_id": "VAD_005",
+            "indicator_code": "volume_documents_traduits_francais",
+            "label": "Volume de documents traduits en français dans les OI",
+            "category": "vade_mecum",
+            "value_type": "absolute",
+            "unit": null,
+            "description": null,
+            "aliases": [],
+            "keywords": ["documents", "traduction", "français"],
+            "validation_rules": {
+                "min": 0
+            },
+            "source": ["annexe_1_bis"]
+        },
+
+        {
+            "indicator_id": "VAD_006",
+            "indicator_code": "effectif_services_traduction",
+            "label": "Effectif des services de traduction dans les OI",
+            "category": "vade_mecum",
+            "value_type": "absolute",
+            "unit": "personnes",
+            "description": null,
+            "aliases": [],
+            "keywords": ["traduction", "effectifs", "OI"],
+            "validation_rules": {
+                "min": 0
+            },
+            "source": ["annexe_1_bis"]
+        },
+
+        {
+            "indicator_id": "VAD_007",
+            "indicator_code": "moyens_financiers_traduction",
+            "label": "Moyens financiers des services de traduction dans les OI",
+            "category": "vade_mecum",
+            "value_type": "absolute",
+            "unit": null,
+            "description": null,
+            "aliases": [],
+            "keywords": ["financiers", "traduction", "OI"],
+            "validation_rules": {
+                "min": 0
+            },
+            "source": ["annexe_1_bis"]
+        },
+
+        {
+            "indicator_id": "VAD_008",
+            "indicator_code": "nombre_participants_formations_linguistiques",
+            "label": "Nombre de participants aux formations linguistiques dans les OI",
+            "category": "vade_mecum",
+            "value_type": "absolute",
+            "unit": null,
+            "description": null,
+            "aliases": [],
+            "keywords": ["formations", "linguistique", "participants"],
+            "validation_rules": {
+                "min": 0
+            },
+            "source": ["annexe_1_bis"]
+        },
+
+        {
+            "indicator_id": "VAD_009",
+            "indicator_code": "offre_formation_linguistique_oi",
+            "label": "Offre de formation linguistique dans les OI",
+            "category": "vade_mecum",
+            "value_type": "categorical",
+            "unit": null,
+            "description": null,
+            "aliases": [],
+            "keywords": ["formation", "linguistique", "OI"],
+            "validation_rules": null,
+            "source": ["annexe_1_bis"]
+        },
+
+        {
+            "indicator_id": "VAD_010",
+            "indicator_code": "proportion_reunions_interpretees",
+            "label": "Proportion de réunions informelles bénéficiant d’une interprétation dans les OI",
+            "category": "vade_mecum",
+            "value_type": "percentage",
+            "unit": "%",
+            "description": null,
+            "aliases": [],
+            "keywords": ["réunions", "interprétation", "proportion"],
+            "validation_rules": {
+                "min": 0,
+                "max": 100
+            },
+            "source": ["annexe_1_bis"]
+        },
+
+        {
+            "indicator_id": "VAD_011",
+            "indicator_code": "proportion_prestations_linguistiques_externes",
+            "label": "Proportion des prestations linguistiques externes dans les OI",
+            "category": "vade_mecum",
+            "value_type": "percentage",
+            "unit": "%",
+            "description": null,
+            "aliases": [],
+            "keywords": ["prestations", "linguistique", "externes"],
+            "validation_rules": {
+                "min": 0,
+                "max": 100
+            },
+            "source": ["annexe_1_bis"]
+        },
+
+        {
+            "indicator_id": "VAD_012",
+            "indicator_code": "respect_delais_traduction",
+            "label": "Situation concernant le respect des délais de traduction ou révision dans les OI",
+            "category": "vade_mecum",
+            "value_type": "categorical",
+            "unit": null,
+            "description": null,
+            "aliases": [],
+            "keywords": ["délais", "traduction", "révision"],
+            "validation_rules": null,
+            "source": ["annexe_1_bis"]
+        },
+
+        {
+            "indicator_id": "VAD_013",
+            "indicator_code": "partenariats_services_traduction",
+            "label": "Existence de partenariats ou relations avec des services homologues pour la traduction et l’interprétation d’autres OI",
+            "category": "vade_mecum",
+            "value_type": "boolean",
+            "unit": null,
+            "description": null,
+            "aliases": [],
+            "keywords": ["partenariats", "traduction", "interprétation"],
+            "validation_rules": null,
+            "source": ["annexe_1_bis"]
+        },
+
+        {
+            "indicator_id": "VAD_014",
+            "indicator_code": "informations_groupes_ambassadeurs_francophones",
+            "label": "Informations générales sur la structure des groupes d'ambassadeurs francophones dans les OI",
+            "category": "vade_mecum",
+            "value_type": "text",
+            "unit": null,
+            "description": null,
+            "aliases": [],
+            "keywords": ["ambassadeurs", "francophones", "OI"],
+            "validation_rules": null,
+            "source": ["annexe_1_bis"]
+        }
+
+    ]
+}

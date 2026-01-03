@@ -1,0 +1,28 @@
+[project]
+name = "olf-backend"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = []
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "backend.settings"
+pythonpath = ["."]
+testpaths = [
+    "contenu",
+    "backend"
+]
+python_files = ["test_*.py"]
+addopts = "--tb=short -p no:warnings"
+filterwarnings = "ignore::DeprecationWarning:^(?!node\\.).*:"
+django_find_project = false
+
+
+[tool.black]
+line-length = 88
+
+
+[tool.isort]
+profile = "black"
+line_length = 88

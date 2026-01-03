@@ -1,0 +1,208 @@
+
+version: "3.9"
+
+services:
+
+  # --- DATABASE POSTGRES ---
+  db:
+    image: postgres:17
+    container_name: olf-postgres
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USERNAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    ports:
+      - "5434:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DATABASE_USERNAME} -d ${DATABASE_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - backend
+
+  # --- CACHE REDIS ---
+  redis:
+    image: redis:8.0
+    container_name: olf-redis
+    command: redis-server --appendonly yes --protected-mode no
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    networks:
+      - backend
+
+  data_init:
+    build: .
+    command: /production_data.sh
+    depends_on:
+      db:
+        condition: service_healthy
+    profiles: [ "init" ]
+    environment:
+      DATABASE_HOSTNAME: db
+      DATABASE_PORT: 5432
+    networks:
+      - backend
+
+
+  # --- DJANGO BACKEND ---
+  backend:
+    container_name: olf-backend
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_NAME: ${DATABASE_NAME}
+      DATABASE_USERNAME: ${DATABASE_USERNAME}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+      ENVIRONMENT: ${ENVIRONMENT:-development}
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/0
+      DROPBOX_REFRESH_TOKEN: ${DROPBOX_REFRESH_TOKEN}
+      DROPBOX_APP_KEY: ${DROPBOX_APP_KEY}
+      DROPBOX_APP_SECRET: ${DROPBOX_APP_SECRET}
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+    command: gunicorn --timeout 300 --workers 4 backend.wsgi:application --bind 0.0.0.0:8000
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - .:/app
+      - ./logs:/app/logs
+      - document_storage:/app/backend/documents
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health/"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+    networks:
+      - backend
+
+  # --- CELERY WORKER ---
+  celery_worker:
+    container_name: olf-celery-worker
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: >
+      celery -A backend.celery worker -l info --pool=prefork --concurrency=2 -Q documents,emails,etl_queue,maintenance,celery
+    environment:
+      DATABASE_NAME: ${DATABASE_NAME}
+      DATABASE_USERNAME: ${DATABASE_USERNAME}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/0
+      DROPBOX_REFRESH_TOKEN: ${DROPBOX_REFRESH_TOKEN}
+      DROPBOX_APP_KEY: ${DROPBOX_APP_KEY}
+      DROPBOX_APP_SECRET: ${DROPBOX_APP_SECRET}
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - .:/app
+      - ./logs:/app/logs
+      - document_storage:/app/backend/documents
+    networks:
+      - backend
+
+  # --- CELERY BEAT ---
+  celery_beat:
+    container_name: olf-celery-beat
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: celery -A backend.celery beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    environment:
+      DATABASE_NAME: ${DATABASE_NAME}
+      DATABASE_USERNAME: ${DATABASE_USERNAME}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/0
+      DROPBOX_REFRESH_TOKEN: ${DROPBOX_REFRESH_TOKEN}
+      DROPBOX_APP_KEY: ${DROPBOX_APP_KEY}
+      DROPBOX_APP_SECRET: ${DROPBOX_APP_SECRET}
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      celery_worker:
+        condition: service_started
+    volumes:
+      - .:/app
+      - ./logs:/app/logs
+      - document_storage:/app/backend/documents
+    networks:
+      - backend
+
+  # --- PORTAINER ---
+  portainer:
+    image: portainer/portainer-ce
+    container_name: olf-portainer
+    restart: always
+    ports:
+      - "9003:9000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    networks:
+      - backend
+  qdrant:
+      image: qdrant/qdrant:v1.12.3
+      container_name: olf-qdrant
+      ports:
+        - "6333:6333"
+        - "6334:6334"
+      volumes:
+        - qdrant_data:/qdrant/storage
+      environment:
+        QDRANT__STORAGE__STRICT_MODE: "true"
+      healthcheck:
+        test: ["CMD", "curl", "-f", "http://localhost:6333/health"]
+        interval: 5s
+        timeout: 3s
+        retries: 10
+      networks:
+        - backend
+
+
+# --------------------------
+# VOLUMES PERSISTENTS
+# --------------------------
+volumes:
+  postgres_data:
+  redis_data:
+  portainer_data:
+  document_storage:
+  qdrant_data:
+
+# --------------------------
+# RÉSEAU
+# --------------------------
+networks:
+  backend:
+    driver: bridge

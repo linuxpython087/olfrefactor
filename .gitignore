@@ -1,0 +1,13 @@
+venv/
+.venv
+venv
+.env
+logs/
+
+test_token.py
+token_generate.py
+.env
+*.env
+__pycache__/
+.venv/
+.idea/
