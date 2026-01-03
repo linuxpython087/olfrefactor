@@ -52,17 +52,21 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install uv
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Upgrade pip & install uv
         run: |
-          pip install --upgrade pip
+          python -m pip install --upgrade pip
           pip install uv
 
-
-      - name: Install dependencies
+      - name: Install dependencies (system)
         run: |
-          uv pip install --system  -r requirements.txt
+          uv pip install --system --no-cache -r requirements.txt
 
-      - name: Wait for database
+      - name: Wait for PostgreSQL
         run: |
           until pg_isready -h localhost -p 5432 -U olf_user; do
             echo "Waiting for postgres..."
@@ -74,7 +78,8 @@ jobs:
           cd backend
           python manage.py migrate --noinput
 
-#      - name: Run tests
-#        run: |
-#          cd backend
-#          pytest -v
+      # À activer plus tard
+      # - name: Run tests
+      #   run: |
+      #     cd backend
+      #     pytest -v
