@@ -26,7 +26,7 @@ class Extraction:
     finished_at: Optional[datetime] = None
     error: Optional[str] = None
 
-    _events: List[DomainEvent] = field(default_factory=list, init=False, repr=False)
+    _events: List[DomainEvent] = field(default_factory=list, init=False, repr=False, compare=False,)
 
     # ---------- FACTORY ----------
     @classmethod

@@ -1,7 +1,7 @@
-.DEFAUTL_GOAL := help
+.DEFAULT_GOAL := help
+
 PYTHON := python
 UV := uv
-
 PRE_COMMIT := pre-commit
 
 SRC := backend
@@ -25,8 +25,8 @@ lint:
 	$(PRE_COMMIT) run --all-files
 
 format:
-	$(PRE_COMMIT) run isort --all-files
-	$(PRE_COMMIT) run yapf --all-files
+	black $(SRC)
+	isort $(SRC)
 
 # =========================
 # TESTS
@@ -35,20 +35,29 @@ format:
 test:
 	pytest $(SRC) -v
 
+test-fast:
+	pytest $(SRC) -q
+
 # =========================
-# CI (entrypoint unique)
+# CI
 # =========================
 
 ci:
+	make install
+	make test
+
+ci-full:
 	make install-dev
 	make lint
 	make test
 
-
 help:
+	@echo ""
 	@echo "Available commands:"
-	@echo "  make install       Install prod deps"
-	@echo "  make install-dev   Install dev deps"
-	@echo "  make lint          Run linters"
-	@echo "  make test          Run tests"
-	@echo "  make ci            Run CI pipeline"
+	@echo "  make install       Install production dependencies"
+	@echo "  make install-dev   Install dev dependencies"
+	@echo "  make lint          Run linters (pre-commit)"
+	@echo "  make format        Format code (black + isort)"
+	@echo "  make test          Run test suite"
+	@echo "  make ci            CI pipeline (fast)"
+	@echo "  make ci-full       CI pipeline (full checks)"

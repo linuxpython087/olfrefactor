@@ -103,8 +103,8 @@ jobs:
           cd backend
           python manage.py migrate --noinput
 
-      # À activer plus tard
-      # - name: Run tests
-      #   run: |
-      #     cd backend
-      #     pytest -v
+
+      - name: Run tests
+        run: |
+          cd backend
+          pytest -v -s

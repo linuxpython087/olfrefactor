@@ -26,6 +26,7 @@ def test_create_extraction():
 
 def test_start_extraction():
     extraction = Extraction.create(DocumentID.new())
+    extraction.pull_events()
 
     extraction.start()
 
@@ -39,6 +40,8 @@ def test_start_extraction():
 
 def test_cannot_start_twice():
     extraction = Extraction.create(DocumentID.new())
+    extraction.pull_events()
+
     extraction.start()
 
     with pytest.raises(InvalidOperation):
@@ -47,7 +50,10 @@ def test_cannot_start_twice():
 
 def test_complete_extraction():
     extraction = Extraction.create(DocumentID.new())
+    extraction.pull_events()
+
     extraction.start()
+    extraction.pull_events()
 
     extraction.complete()
 
@@ -55,8 +61,8 @@ def test_complete_extraction():
     assert extraction.finished_at is not None
 
     events = extraction.pull_events()
-    assert any(isinstance(e, ExtractionCompleted) for e in events)
-    assert isinstance(events[-1], ExtractionCompleted)
+    assert len(events) == 1
+    assert isinstance(events[0], ExtractionCompleted)
 
 
 def test_cannot_complete_without_start():
@@ -68,7 +74,10 @@ def test_cannot_complete_without_start():
 
 def test_fail_extraction():
     extraction = Extraction.create(DocumentID.new())
+    extraction.pull_events()
+
     extraction.start()
+    extraction.pull_events()
 
     extraction.fail("OCR error")
 
@@ -76,7 +85,8 @@ def test_fail_extraction():
     assert extraction.error == "OCR error"
 
     events = extraction.pull_events()
-    assert isinstance(events[-1], ExtractionFailed)
+    assert len(events) == 1
+    assert isinstance(events[0], ExtractionFailed)
 
 
 def test_cannot_fail_if_not_running():
@@ -88,9 +98,13 @@ def test_cannot_fail_if_not_running():
 
 def test_validate_extraction():
     extraction = Extraction.create(DocumentID.new())
+    extraction.pull_events()
+
     extraction.start()
+    extraction.pull_events()
 
     extraction.complete()
+    extraction.pull_events()
 
     admin_id = UserID.new()
     extraction.validate(admin_id)
@@ -98,8 +112,5 @@ def test_validate_extraction():
     assert extraction.status.value == ExtractionStatus.VALIDATED
 
     events = extraction.pull_events()
-
-    assert len(events) == 3
-    assert isinstance(events[0], ExtractionStarted)
-    assert isinstance(events[1], ExtractionCompleted)
-    assert isinstance(events[2], ExtractionValidated)
+    assert len(events) == 1
+    assert isinstance(events[0], ExtractionValidated)

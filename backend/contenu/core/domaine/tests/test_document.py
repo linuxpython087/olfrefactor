@@ -1,8 +1,5 @@
-# tests/test_document.py
-# tests/test_document.py
-from datetime import datetime, timezone
-
 import pytest
+
 from contenu.core.domaine.events import (
     DocumentDeleteRequested,
     DocumentReadyForETL,
@@ -11,12 +8,15 @@ from contenu.core.domaine.events import (
     DocumentUploadStarted,
 )
 from contenu.core.domaine.model import Document
+
 from shared.value_objects import DocumentID, TenantID, UserID
+from shared.enums import DocumentStatus
 
 
 # =========================
 # Fixtures
 # =========================
+
 @pytest.fixture
 def document_id():
     return DocumentID.new()
@@ -47,12 +47,13 @@ def sample_document(document_id, user_id, tenant_id):
 # Tests
 # =========================
 
-
 def test_start_upload_emits_event(sample_document):
     doc = sample_document
+
     doc.start_upload()
 
-    assert doc.status == "UPLOADING"
+    assert doc.status == DocumentStatus.UPLOADING
+
     events = doc.pull_events()
     assert len(events) == 1
     assert isinstance(events[0], DocumentUploadStarted)
@@ -66,9 +67,10 @@ def test_mark_stored_emits_event(sample_document):
 
     uri = "https://dropbox.com/fake_path"
     checksum = "abc123"
+
     doc.mark_stored(uri, checksum)
 
-    assert doc.status == "STORED"
+    assert doc.status == DocumentStatus.STORED
     assert doc.storage_uri == uri
     assert doc.checksum == checksum
 
@@ -86,13 +88,14 @@ def test_submit_emits_events(sample_document):
     doc.pull_events()  # vider events intermédiaires
 
     doc.submit()
-    assert doc.status == "SUBMITTED"
+
+    assert doc.status == DocumentStatus.SUBMITTED
 
     events = doc.pull_events()
-    # 2 events: DocumentSubmitted + DocumentReadyForETL
     assert len(events) == 2
     assert isinstance(events[0], DocumentSubmitted)
     assert isinstance(events[1], DocumentReadyForETL)
+
     assert events[0].document_id == doc.id
     assert events[1].document_id == doc.id
 
@@ -100,38 +103,42 @@ def test_submit_emits_events(sample_document):
 def test_pull_events_clears_events(sample_document):
     doc = sample_document
     doc.start_upload()
+
     assert len(doc._events) == 1
 
     events = doc.pull_events()
     assert len(events) == 1
-    # les événements sont maintenant vidés
     assert len(doc._events) == 0
 
 
 def test_multiple_transitions(sample_document):
     doc = sample_document
+
     doc.start_upload()
     doc.mark_stored("uri", "checksum")
     doc.submit()
 
-    assert doc.status == "SUBMITTED"
+    assert doc.status == DocumentStatus.SUBMITTED
 
     events = doc.pull_events()
-    types = [type(e) for e in events]
-    assert DocumentUploadStarted in types
-    assert DocumentStored in types
-    assert DocumentSubmitted in types
-    assert DocumentReadyForETL in types
+    event_types = {type(e) for e in events}
+
+    assert DocumentUploadStarted in event_types
+    assert DocumentStored in event_types
+    assert DocumentSubmitted in event_types
+    assert DocumentReadyForETL in event_types
 
 
 def test_delete_requested_event(sample_document):
     doc = sample_document
+
     doc._raise(
         DocumentDeleteRequested(
             document_id=doc.id,
             requested_by=doc.submitted_by,
         )
     )
+
     events = doc.pull_events()
     assert len(events) == 1
     assert isinstance(events[0], DocumentDeleteRequested)
