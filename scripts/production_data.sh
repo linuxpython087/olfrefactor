@@ -15,10 +15,10 @@ if [ "$DATABASE_HOSTNAME" ]; then
 fi
 
 echo "📦 Applying migrations (safety)..."
-python manage.py migrate --noinput
+cd backend && python manage.py migrate --noinput
 
 echo "👤 Seeding roles..."
-python manage.py seed_role
+ python manage.py seed_role
 
 echo "📊 Importing SVU indicators..."
 

@@ -41,7 +41,7 @@ jobs:
       # --- DATABASE ---
       DATABASE_NAME: olf_db
       DATABASE_USERNAME: olf_user
-      DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+      DATABASE_PASSWORD: ${{ secrets.CI_DATABASE_PASSWORD }}
       DATABASE_HOSTNAME: localhost
       DATABASE_PORT: 5432
 
@@ -88,6 +88,7 @@ jobs:
 
       - name: Install dependencies (system)
         run: |
+          echo $DATABASE_PASSWORD
           uv pip install --system --no-cache -r requirements.txt
 
       - name: Wait for PostgreSQL
