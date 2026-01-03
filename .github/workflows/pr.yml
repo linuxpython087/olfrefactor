@@ -81,8 +81,7 @@ jobs:
         ports:
           - 6333:6333
           - 6334:6334
-        env:
-          QDRANT__STORAGE__STRICT_MODE: "false"
+
 
     steps:
       - name: Checkout code
