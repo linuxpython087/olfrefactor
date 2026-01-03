@@ -35,6 +35,10 @@ jobs:
           --health-retries=3
         ports:
           - 6379:6379
+      qdrant:
+        image: qdrant/qdrant:v1.2.1
+        ports:
+          - 6333:6333
 
 
     env:

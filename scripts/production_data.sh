@@ -18,7 +18,8 @@ echo "📦 Applying migrations (safety)..."
 cd backend && python manage.py migrate --noinput
 
 echo "👤 Seeding roles..."
- python manage.py seed_role
+ python manage.py region_country
+
 
 echo "📊 Importing SVU indicators..."
 
