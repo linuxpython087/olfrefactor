@@ -70,7 +70,17 @@ jobs:
         ports:
           - 6379:6379
 
-
+      # --- VECTOR DATABASE QDRANT ---
+      qdrant:
+        image: qdrant/qdrant:v1.12.3
+        options: >-
+          --health-cmd="curl -f http://localhost:6333/health"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+        ports:
+          - 6333:6333
+          - 6334:6334
 
 
     steps:
