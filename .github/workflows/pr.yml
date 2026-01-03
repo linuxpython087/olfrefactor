@@ -1,6 +1,8 @@
 name: Quality Assurance
 
-on: [pull_request, workflow_call]
+on:
+  pull_request:
+  workflow_call:
 
 jobs:
   quality-assurance:
@@ -8,6 +10,25 @@ jobs:
 
     container:
       image: python:3.12-slim
+
+    # 🔐 VARIABLES D’ENV AU NIVEAU DU JOB (RECOMMANDÉ)
+    env:
+      # --- DATABASE ---
+      DATABASE_NAME: olf_db
+      DATABASE_USERNAME: olf_user
+      DATABASE_PASSWORD: ${{ secrets.CI_DATABASE_PASSWORD }}
+      DATABASE_HOSTNAME: db
+      DATABASE_PORT: 5432
+
+      # --- DJANGO ---
+      DJANGO_SETTINGS_MODULE: backend.settings
+      DJANGO_DEBUG: "false"
+      CI: "true"
+
+      # --- EXTERNAL SERVICES ---
+      DROPBOX_APP_KEY: ${{ secrets.DROPBOX_APP_KEY }}
+      DROPBOX_APP_SECRET: ${{ secrets.DROPBOX_APP_SECRET }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 
     services:
       db:
@@ -23,28 +44,30 @@ jobs:
           --health-retries=5
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Install uv
         run: |
           pip install --upgrade pip
           pip install uv
 
-      - name: Install dependancies
-        run: uv pip install --system -r requirements.txt
-
-      - name: Run CI
+      - name: Install dependencies
         run: |
-          cd backend && python manage.py migrate
-        env:
-          DATABASE_NAME: olf_db
-          DATABASE_USERNAME: olf_user
-          DATABASE_PASSWORD: ${{ secrets.CI_DATABASE_PASSWORD }}
-          DATABASE_HOSTNAME: db
-          DATABASE_PORT: 5432
+          uv pip install --system -r requirements.txt
 
-          DROPBOX_APP_KEY: ${{ secrets.DROPBOX_APP_KEY }}
-          DROPBOX_APP_SECRET: ${{ secrets.DROPBOX_APP_SECRET }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      - name: Run migrations
+        run: |
+          cd backend
+          python manage.py migrate --noinput
 
-          DJANGO_SETTINGS_MODULE: backend.settings
+      # 🔁 OPTIONNEL (fortement recommandé)
+      # - name: Run Django checks
+      #   run: |
+      #     cd backend
+      #     python manage.py check
+
+      # - name: Run tests
+      #   run: |
+      #     cd backend
+      #     pytest
