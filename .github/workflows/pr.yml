@@ -8,43 +8,22 @@ jobs:
   quality-assurance:
     runs-on: ubuntu-latest
 
-    # 🔐 VARIABLES D'ENV GLOBALES
     env:
-      # --- DATABASE ---
       DATABASE_NAME: olf_db
       DATABASE_USERNAME: olf_user
-      DATABASE_PASSWORD: ${{ secrets.CI_DATABASE_PASSWORD }}
-      DATABASE_HOSTNAME: db
+      DATABASE_PASSWORD: Boss2000
+      DATABASE_HOST: localhost
       DATABASE_PORT: 5432
 
-      # --- REDIS ---
-      REDIS_HOST: redis
+      REDIS_HOST: localhost
       REDIS_PORT: 6379
 
-      # --- QDRANT ---
-      QDRANT_HOST: qdrant
-      QDRANT_PORT: 6333
-
-      # --- DJANGO ---
       DJANGO_SETTINGS_MODULE: backend.settings
-      DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY || 'test-secret-key-for-ci' }}
+      DJANGO_SECRET_KEY: test-secret-key
       DJANGO_DEBUG: "false"
       CI: "true"
 
-      # --- CELERY ---
-      CELERY_BROKER_URL: redis://redis:6379/0
-      CELERY_RESULT_BACKEND: redis://redis:6379/0
-
-      # --- EXTERNAL SERVICES ---
-      DROPBOX_APP_KEY: ${{ secrets.DROPBOX_APP_KEY || '' }}
-      DROPBOX_APP_SECRET: ${{ secrets.DROPBOX_APP_SECRET || '' }}
-      DROPBOX_REFRESH_TOKEN: ${{ secrets.DROPBOX_REFRESH_TOKEN || '' }}
-      DROPBOX_ACCESS_TOKEN_CACHE_KEY: ${{ secrets.DROPBOX_ACCESS_TOKEN_CACHE_KEY || 'dropbox_access_token' }}
-      DROPBOX_TOKEN_EXPIRY_CACHE_KEY: ${{ secrets.DROPBOX_TOKEN_EXPIRY_CACHE_KEY || 'dropbox_token_expiry' }}
-      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY || 'test-key' }}
-
     services:
-      # --- DATABASE POSTGRES ---
       db:
         image: postgres:17-alpine
         env:
@@ -59,7 +38,6 @@ jobs:
         ports:
           - 5432:5432
 
-      # --- CACHE REDIS ---
       redis:
         image: redis:8.0-alpine
         options: >-
@@ -70,76 +48,38 @@ jobs:
         ports:
           - 6379:6379
 
-      # --- VECTOR DATABASE QDRANT ---
-#      qdrant:
-#        image: qdrant/qdrant:v1.12.3
-#        options: >-
-#          --health-cmd="curl -f http://localhost:6333/health"
-#          --health-interval=10s
-#          --health-timeout=5s
-#          --health-retries=5
-#        ports:
-#          - 6333:6333
-#          - 6334:6334
-
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install uv (modern Python package installer)
+      - name: Install uv
         run: |
           pip install --upgrade pip
           pip install uv
 
-      - name: Install Python dependencies
+      - name: Create virtualenv
         run: |
-          uv pip install --system -r requirements.txt
-          uv pip install --system pytest pytest-django pytest-cov
+          uv venv .venv
+          echo ".venv/bin" >> $GITHUB_PATH
 
-     
-
-      - name: Wait for services to be ready
+      - name: Install dependencies
         run: |
-          echo "Waiting for services..."
-          sleep 10
+          uv pip install -r requirements.txt
+          uv pip install pytest pytest-django pytest-cov
+
+      - name: Wait for database
+        run: |
+          until pg_isready -h localhost -p 5432 -U olf_user; do
+            echo "Waiting for postgres..."
+            sleep 2
+          done
 
       - name: Run migrations
         run: |
           cd backend
           python manage.py migrate --noinput
 
-#      - name: Collect static files
+#      - name: Run tests
 #        run: |
 #          cd backend
-#          python manage.py collectstatic --noinput
-#
-#      - name: Run Django system checks
-#        run: |
-#          cd backend
-#          python manage.py check --deploy --fail-level WARNING
-#
-#      - name: Run tests with coverage
-#        run: |
-#          cd backend
-#          pytest \
-#            --cov=contenu \
-#            --cov=shared \
-#            --cov-report=xml \
-#            --cov-report=term-missing \
-#            --disable-warnings \
-#            -v
-#
-#      - name: Security check
-#        run: |
-#          pip install bandit safety
-#          bandit -r backend/ -ll
-#          safety check -r requirements.txt
-#
-#      - name: Upload coverage to Codecov
-#        uses: codecov/codecov-action@v3
-#        with:
-#          file: ./backend/coverage.xml
-#          flags: unittests
-#        env:
-#          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+#          pytest -v
