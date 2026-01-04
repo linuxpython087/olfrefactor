@@ -95,7 +95,7 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential libpq-dev netcat make curl
+          sudo apt-get install -y build-essential libpq-dev  make curl
 
 
       - name: Install dependencies (system)
