@@ -14,7 +14,7 @@ WORKDIR /app/backend
 
 # Installer les dépendances système
 RUN apt-get update && \
-    apt-get install -y build-essential libpq-dev curl  netcat-openbsd && \
+    apt-get install -y build-essential libpq-dev curl  netcat-openbsd make && \
     apt-get clean
 
 # Copier les fichiers requirements

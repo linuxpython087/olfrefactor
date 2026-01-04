@@ -28,6 +28,11 @@ if [ "$DJANGO_ENV" = "production" ]; then
   python manage.py collectstatic --noinput
 fi
 
+if [ -f /app/backend/Makefile ]; then
+    make init
+fi
+
+
 # -----------------------------
 # Start server
 # -----------------------------
