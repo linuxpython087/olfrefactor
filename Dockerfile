@@ -25,7 +25,7 @@ RUN pip install --upgrade pip
 RUN pip install  -r requirements.txt
 
 # Copier tout le projet
-COPY backend .
+COPY . .
 
 # Exposer le port de Django
 EXPOSE 8000

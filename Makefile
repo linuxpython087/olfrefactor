@@ -33,7 +33,7 @@ format:
 # =========================
 
 test:
-	pytest $(SRC) -v
+	pytest $(SRC) -v -s
 
 test-fast:
 	pytest $(SRC) -q

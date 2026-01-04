@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -e
+
 echo "📁 Creating logs directory..."
 mkdir -p /app/logs
 chmod -R 755 /app/logs
@@ -15,12 +16,10 @@ if [ "$DATABASE_HOSTNAME" ]; then
 fi
 
 echo "📦 Applying migrations (safety)..."
-cd backend && python manage.py migrate --noinput
+python manage.py migrate --noinput
 
 echo "👤 Seeding roles..."
- python manage.py region_country
-
+python manage.py region_country
 
 echo "📊 Importing SVU indicators..."
-
 echo "✅ Production data bootstrap completed."
